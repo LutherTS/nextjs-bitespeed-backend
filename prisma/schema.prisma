@@ -1,0 +1,25 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id                Int          @id @default(autoincrement())
+  phoneNumber       String?      
+  email             String? 
+  linkPrecedence    String       
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt @default(now())
+  deletedAt         DateTime?
+
+  linkedId          Int?
+  primary           Contact?     @relation("PrimarySecondaries", fields: [linkedId], references: [id])
+  secondaries       Contact[]    @relation("PrimarySecondaries")
+}
